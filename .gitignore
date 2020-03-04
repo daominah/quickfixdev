@@ -1,0 +1,22 @@
+# ides
+.idea
+.vscode
+
+
+# go testing output
+*.out
+*.test
+profile*.pdf
+
+
+# binary exes
+cmd/*/bin_*
+
+
+# config with real username, password...
+conf/ignore*.sh
+
+
+# temporarily disable go modules for developing
+go.mod
+go.sum
