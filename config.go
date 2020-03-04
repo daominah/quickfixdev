@@ -5,6 +5,8 @@ import (
 	"strings"
 )
 
+// Config is golang structured config for quickfix app.
+// Usage: quickfix.ParseSettings(strings.NewReader(thisConfig.ToQuickFIXSetting()))
 type Config struct {
 	Default struct {
 		IsClient bool
@@ -30,6 +32,7 @@ type Config struct {
 	Sessions []Session
 }
 
+// Session _
 type Session struct {
 	BeginString string // version of FIX, ex: FIX.4.4
 }
@@ -41,6 +44,7 @@ func boolToYN(b bool) string {
 	return "N"
 }
 
+// ToQuickFIXSetting returns the config in quickfix format
 func (c Config) ToQuickFIXSetting() string {
 	ret := []string{"[DEFAULT]"}
 	if c.Default.IsClient {
@@ -73,6 +77,7 @@ func (c Config) ToQuickFIXSetting() string {
 	return strings.Join(ret, "\n")
 }
 
+// NewMockServerConfig is an example of acceptor config in quickfix
 func NewMockServerConfig() Config {
 	c0 := Config{}
 	c0.Default.IsClient = false
@@ -87,6 +92,7 @@ func NewMockServerConfig() Config {
 	return c0
 }
 
+// NewMockClientConfig is an example of initiator config in quickfix
 func NewMockClientConfig() Config {
 	c0 := Config{}
 	c0.Default.IsClient = true

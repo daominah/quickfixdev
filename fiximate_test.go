@@ -16,7 +16,7 @@ func TestParseFIXFieldsHtml(t *testing.T) {
 }
 
 func TestParseMsgTypesHtml(t *testing.T) {
-	msgTypes, err := ParseMsgTypesHtml(html1)
+	msgTypes, err := parseMsgTypesHtml(html1)
 	if err != nil {
 		t.Error(err)
 	}
@@ -30,7 +30,7 @@ func TestParseMsgTypesHtml(t *testing.T) {
 
 // Print the map FIXMsgTypes
 func _TestGenMapMsgTypes(t *testing.T) {
-	msgTypes, err := ParseMsgTypesHtml(html1)
+	msgTypes, err := parseMsgTypesHtml(html1)
 	if err != nil {
 		t.Error(err)
 	}

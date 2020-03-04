@@ -8,6 +8,7 @@ import (
 	"golang.org/x/net/html"
 )
 
+// FIXField is detail of a FIX protocol tag
 type FIXField struct {
 	Tag           int
 	FieldName     string
@@ -20,7 +21,7 @@ type FIXField struct {
 	RelateTag     string
 }
 
-// https://fiximate.fixtrading.org/en/FIX.5.0SP2_EP252/fields_sorted_by_tagnum.html
+// ParseFIXFieldsHtml _
 func ParseFIXFieldsHtml(htmlStr string) ([]FIXField, error) {
 	root, err := html.Parse(strings.NewReader(htmlStr))
 	if err != nil {
@@ -53,14 +54,15 @@ func ParseFIXFieldsHtml(htmlStr string) ([]FIXField, error) {
 	return ret, nil
 }
 
-type MsgType struct {
+type msgType struct {
 	MsgTypeSymbol string
 	Name          string
 	Description   string
 }
 
-// https://fiximate.fixtrading.org/en/FIX.5.0SP2_EP254/tag35.htmls
-func ParseMsgTypesHtml(htmlStr string) ([]MsgType, error) {
+// parseMsgTypesHtml _.
+// :arg htmlStr: from https://fiximate.fixtrading.org/en/FIX.5.0SP2_EP254/tag35.htmls
+func parseMsgTypesHtml(htmlStr string) ([]msgType, error) {
 	root, err := html.Parse(strings.NewReader(htmlStr))
 	if err != nil {
 		return nil, err
@@ -69,7 +71,7 @@ func ParseMsgTypesHtml(htmlStr string) ([]MsgType, error) {
 	if err != nil {
 		return nil, err
 	}
-	ret := make([]MsgType, 0)
+	ret := make([]msgType, 0)
 	for _, row := range rows {
 		cells, _ := textproc.HtmlXpath(row, `//td`)
 		if len(cells) != 6 {
@@ -77,7 +79,7 @@ func ParseMsgTypesHtml(htmlStr string) ([]MsgType, error) {
 		}
 		name := textproc.HtmlGetText(cells[5])
 		name = strings.Trim(name, "[]")
-		field := MsgType{
+		field := msgType{
 			MsgTypeSymbol: textproc.HtmlGetText(cells[0]),
 			Name:          name,
 			Description:   textproc.HtmlGetText(cells[2]),
