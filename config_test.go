@@ -6,7 +6,7 @@ import (
 
 func TestConfig(t *testing.T) {
 	c0 := NewMockClientConfig()
-
+	c0.Sessions[0].HNXVersion = "5.0"
 	if c0.ToQuickFIXSetting() != `[DEFAULT]
 SocketConnectHost=127.0.0.1
 SocketConnectPort=5001
@@ -19,7 +19,25 @@ MongoStoreDatabase=fix_client
 EnableLastMsgSeqNumProcessed=Y
 
 [SESSION]
-BeginString=FIX.4.4` {
+BeginString=FIX.4.4
+HNXVersion=5.0
+` {
 		t.Error(c0.ToQuickFIXSetting())
+	}
+
+	c1 := NewMockServerConfig()
+	if c1.ToQuickFIXSetting() != `[DEFAULT]
+SocketAcceptPort=5001
+ResetOnLogon=N
+SenderCompID=HNX
+TargetCompID=TechX
+MongoStoreConnection=mongodb://127.0.0.1:27017/
+MongoStoreDatabase=fix_server
+EnableLastMsgSeqNumProcessed=Y
+
+[SESSION]
+BeginString=FIX.4.4
+` {
+		t.Errorf(c1.ToQuickFIXSetting())
 	}
 }

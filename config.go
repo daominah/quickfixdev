@@ -10,7 +10,7 @@ import (
 type Config struct {
 	Default struct {
 		IsClient bool
-		Client   struct {
+		Client struct {
 			SocketConnectHost string // ex: 127.0.0.1
 			SocketConnectPort string // ex: 5001
 			HeartBtInt        int    // heartbeat interval in seconds, ex: 30
@@ -35,6 +35,7 @@ type Config struct {
 // Session _
 type Session struct {
 	BeginString string // version of FIX, ex: FIX.4.4
+	HNXVersion  string // specific to HaNoiStockExchange
 }
 
 func boolToYN(b bool) string {
@@ -73,8 +74,12 @@ func (c Config) ToQuickFIXSetting() string {
 			"\n[SESSION]",
 			fmt.Sprintf("BeginString=%v", session.BeginString),
 		)
+		if session.HNXVersion != "" {
+			ret = append(ret, fmt.Sprintf("HNXVersion=%v", session.HNXVersion))
+		}
 	}
-	return strings.Join(ret, "\n")
+
+	return strings.Join(ret, "\n") + "\n"
 }
 
 // NewMockServerConfig is an example of acceptor config in quickfix
