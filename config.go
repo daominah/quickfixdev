@@ -14,7 +14,8 @@ type Config struct {
 			SocketConnectHost string // ex: 127.0.0.1
 			SocketConnectPort string // ex: 5001
 			HeartBtInt        int    // heartbeat interval in seconds, ex: 30
-			ReconnectInterval int    // measure in seconds, default: 30
+			ReconnectInterval int    // measure in seconds, FIX default: 30
+			LogonTimeout      int    // measure in seconds, FIX default: 10
 		}
 		Server struct {
 			SocketAcceptPort string // ex: 5001
@@ -53,8 +54,13 @@ func (c Config) ToQuickFIXSetting() string {
 			fmt.Sprintf("SocketConnectHost=%v", c.Default.Client.SocketConnectHost),
 			fmt.Sprintf("SocketConnectPort=%v", c.Default.Client.SocketConnectPort),
 			fmt.Sprintf("HeartBtInt=%v", c.Default.Client.HeartBtInt),
-			fmt.Sprintf("ReconnectInterval=%v", c.Default.Client.ReconnectInterval),
 		)
+		if c.Default.Client.ReconnectInterval > 0 {
+			ret = append(ret, fmt.Sprintf("ReconnectInterval=%v", c.Default.Client.ReconnectInterval))
+		}
+		if c.Default.Client.LogonTimeout > 0 {
+			ret = append(ret, fmt.Sprintf("LogonTimeout=%v", c.Default.Client.LogonTimeout))
+		}
 	} else {
 		ret = append(ret,
 			fmt.Sprintf("SocketAcceptPort=%v", c.Default.Server.SocketAcceptPort),
@@ -104,7 +110,8 @@ func NewMockClientConfig() Config {
 	c0.Default.Client.SocketConnectHost = "127.0.0.1"
 	c0.Default.Client.SocketConnectPort = "5001"
 	c0.Default.Client.HeartBtInt = 30
-	c0.Default.Client.ReconnectInterval = 5
+	c0.Default.Client.ReconnectInterval = 30
+	c0.Default.Client.LogonTimeout = 10
 	c0.Default.SenderCompID = "TechX"
 	c0.Default.TargetCompID = "HNX"
 	c0.Default.MongoStoreConnection = "mongodb://127.0.0.1:27017/"

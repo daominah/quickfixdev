@@ -7,11 +7,13 @@ import (
 func TestConfig(t *testing.T) {
 	c0 := NewMockClientConfig()
 	c0.Sessions[0].HNXVersion = "5.0"
+	c0.Default.Client.LogonTimeout = 20
 	if c0.ToQuickFIXSetting() != `[DEFAULT]
 SocketConnectHost=127.0.0.1
 SocketConnectPort=5001
 HeartBtInt=30
-ReconnectInterval=5
+ReconnectInterval=30
+LogonTimeout=20
 SenderCompID=TechX
 TargetCompID=HNX
 MongoStoreConnection=mongodb://127.0.0.1:27017/
