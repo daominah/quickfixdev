@@ -14,8 +14,9 @@ type Config struct {
 			SocketConnectHost string // ex: 127.0.0.1
 			SocketConnectPort string // ex: 5001
 			HeartBtInt        int    // heartbeat interval in seconds, ex: 30
-			ReconnectInterval int    // measure in seconds, FIX default: 30
 			LogonTimeout      int    // measure in seconds, FIX default: 10
+			// measure in seconds, should be longer than LogonTimeout, FIX default: 30
+			ReconnectInterval int
 		}
 		Server struct {
 			SocketAcceptPort string // ex: 5001
